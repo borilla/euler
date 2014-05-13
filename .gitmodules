@@ -1,0 +1,3 @@
+[submodule "primes"]
+	path = primes
+	url = https://github.com/borilla/primes.git

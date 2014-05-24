@@ -1,3 +1,6 @@
 [submodule "primes"]
 	path = primes
 	url = https://github.com/borilla/primes.git
+[submodule "bignum"]
+	path = bignum
+	url = https://github.com/borilla/bignum.git

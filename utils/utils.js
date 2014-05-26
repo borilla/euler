@@ -38,7 +38,7 @@ var Utils = (function() {
 	}
 
 	function isEven(n) {
-		return n & 1 ^ 1;
+		return !(n & 1);
 	}
 
 	function isOdd(n) {

@@ -40,4 +40,4 @@ for (var n = 1000; n < 10000; ++n) {
 }
 
 console.log('results', results);
-console.log('sum', Utils.sumArray(results));
+console.log('sum', Utils.arraySum(results));

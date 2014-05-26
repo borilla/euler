@@ -7,7 +7,7 @@ function getDigitFactorial(digit) {
 }
 
 function sumOfFactorialsOfDigits(n) {
-	return Utils.sumArray(Utils.getDigits(n).map(getDigitFactorial));
+	return Utils.arraySum(Utils.getDigits(n).map(getDigitFactorial));
 }
 
 console.log('sumOfFactorialsOfDigits(145)', sumOfFactorialsOfDigits(145));
@@ -31,4 +31,4 @@ for (var n = 3, maxN = calcMaxN(); n < maxN; ++n) {
 }
 
 console.log('results', results);
-console.log('sum', Utils.sumArray(results));
+console.log('sum', Utils.arraySum(results));

@@ -3,7 +3,8 @@ function allRotationsArePrime(num) {
 	var str = num.toString();
 	for (var i = 1, l = str.length; i < l; ++i) {
 		str = str.slice(1) + str[0];
-		if (!Primes.isPrime(+str)) {
+		num = +str;
+		if (num % 2 == 0 || !Primes.isPrime(num)) {
 			return false;
 		}
 	}

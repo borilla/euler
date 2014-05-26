@@ -1,32 +1,13 @@
 
-function rotateString(str) {
-	return str.slice(1) + str[0];
-}
-
-console.log("rotateString('john')", rotateString('john'));
-
-function getAllRotations(num) {
-	var rotations = [num];
+function allRotationsArePrime(num) {
 	var str = num.toString();
 	for (var i = 1, l = str.length; i < l; ++i) {
-		str = rotateString(str);
-		rotations.push(+str);
+		str = str.slice(1) + str[0];
+		if (!Primes.isPrime(+str)) {
+			return false;
+		}
 	}
-	return rotations;
-}
-
-console.log('getAllRotations(197)', getAllRotations(197));
-
-function areAllPrime(nums) {
-	return nums.every(Primes.isPrime);
-}
-
-console.log('areAllPrime(getAllRotations(17))', areAllPrime(getAllRotations(17)));
-console.log('areAllPrime(getAllRotations(23))', areAllPrime(getAllRotations(23)));
-console.log('areAllPrime(getAllRotations(197))', areAllPrime(getAllRotations(197)));
-
-function allRotationsArePrime(n) {
-	return areAllPrime(getAllRotations(n));
+	return true;
 }
 
 console.log('allRotationsArePrime(197)', allRotationsArePrime(197));

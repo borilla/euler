@@ -40,13 +40,13 @@ function allXDigitPrimes(x) {
 
 var t1 = Date.now();
 
-console.log('count of six digit primes', allXDigitPrimes(6).length);
-console.log('count of seven digit primes', allXDigitPrimes(7).length);
+var digits = 6;
+var primes = allXDigitPrimes(digits);
+console.log('count of ' + digits + ' digit primes', primes.length);
 
 var t2 = Date.now();
 
-var primes = allXDigitPrimes(6);
-
+var target = 8;
 var max = { matches: 0 };
 var l = primes.length;
 for (var i = 0; i < l - 1; ++i) {
@@ -71,6 +71,9 @@ for (var i = 0; i < l - 1; ++i) {
 	if (primeMax.matches > max.matches) {
 		max = primeMax;
 		max.prime = prime;
+	}
+	if (max.matches >= target) {
+		break;
 	}
 }
 

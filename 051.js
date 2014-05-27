@@ -48,10 +48,13 @@ console.log('count of five digit primes', primes.length);
 var t1 = Date.now();
 
 var max = { matches: 0 };
-primes.forEach(function(prime) {
+var l = primes.length;
+for (var i = 0; i < l; ++i) {
+	var prime = primes[i];
 	var primeResults = {};
 	var primeMax = { matches: 0 };
-	primes.forEach(function(other) {
+	for (var j = i; j < l; ++j) {
+		var other = primes[j];
 		var pattern = possibleFamilyMember(prime, other)
 		if (pattern !== false) {
 			var matches = primeResults[pattern];
@@ -64,13 +67,12 @@ primes.forEach(function(prime) {
 				}
 			}
 		}
-	});
+	}
 	if (primeMax.matches > max.matches) {
 		max = primeMax;
 		max.prime = prime;
 	}
-});
-
+}
 
 var t2 = Date.now();
 

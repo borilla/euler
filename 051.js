@@ -38,10 +38,14 @@ function allXDigitPrimes(x) {
 	});
 }
 
-var primes = allXDigitPrimes(5);
-console.log('count of five digit primes', primes.length);
-
 var t1 = Date.now();
+
+console.log('count of six digit primes', allXDigitPrimes(6).length);
+console.log('count of seven digit primes', allXDigitPrimes(7).length);
+
+var t2 = Date.now();
+
+var primes = allXDigitPrimes(6);
 
 var max = { matches: 0 };
 var l = primes.length;
@@ -54,7 +58,7 @@ for (var i = 0; i < l - 1; ++i) {
 		var pattern = possibleFamilyMember(prime, other)
 		if (pattern !== false) {
 			var matches = primeResults[pattern];
-			matches = matches ? matches + 1 : 1;
+			matches = matches ? matches + 1 : 2;
 			primeResults[pattern] = matches;
 			if (matches > primeMax.matches) {
 				primeMax = {
@@ -70,7 +74,8 @@ for (var i = 0; i < l - 1; ++i) {
 	}
 }
 
-var t2 = Date.now();
+var t3 = Date.now();
 
 console.log('max', max);
-console.log('time', t2 - t1);
+console.log('time to calculate primes', t2 - t1);
+console.log('time to calculate patterns', t3 - t2);

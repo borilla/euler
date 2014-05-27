@@ -1,12 +1,8 @@
 
 function possibleFamilyMember(str1, str2) {
-	var len = str1.length;
-	if (str1 == str2 || str2.length != len) {
-		return false;
-	}
 	var pattern = '';
 	var d1, d2;
-	for (var i = 0; i < len; ++i) {
+	for (var i = 0, l = str1.length; i < l; ++i) {
 		var s1 = str1[i];
 		var s2 = str2[i];
 		if (s1 == s2) {
@@ -49,11 +45,11 @@ var t1 = Date.now();
 
 var max = { matches: 0 };
 var l = primes.length;
-for (var i = 0; i < l; ++i) {
+for (var i = 0; i < l - 1; ++i) {
 	var prime = primes[i];
 	var primeResults = {};
 	var primeMax = { matches: 0 };
-	for (var j = i; j < l; ++j) {
+	for (var j = i + 1; j < l; ++j) {
 		var other = primes[j];
 		var pattern = possibleFamilyMember(prime, other)
 		if (pattern !== false) {

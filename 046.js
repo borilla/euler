@@ -22,4 +22,4 @@ while (true) {
 	n += 2;
 }
 
-console.log('first non-Goldbach odd number', n);
+console.log('first non-Goldbach composite odd number', n);

@@ -1,48 +1,34 @@
 
-function getConsecutivePrimes(n, primes) {
-	primes = primes || Primes.getPrimesTo(n);
-	var length = primes.length;
-	for (var i = 0; i < length; ++i) {
-		if (primes[i] > n) {
-			return;
-		}
-		var arr = [];
-		var sum = 0;
-		var j = i;
-		while (sum < n && j < length) {
-			var prime = primes[j];
-			sum += prime;
-			arr.push(prime);
-			++j;
-		}
-		if (sum == n) {
-			return {
-				n: n,
-				primes: arr
-			};
-		}
-	}
-}
-
-console.log('getConsecutivePrimes(41)', getConsecutivePrimes(41));
-
-function getLongestPrimeSumTo(n) {
+function getLongestPrimeSumTo(limit) {
+	var primes = Primes.getPrimesTo(limit);
+	var primesObj = {};
+	primes.forEach(function(prime) {
+		primesObj[prime] = true;
+	});
 	var max = {
-		primes: []
+		length: 0
 	};
-
-	var primes = Primes.getPrimesTo(n);
 	for (var i = 0, l = primes.length; i < l; ++i) {
-		var prime = primes[i];
-		var p = getConsecutivePrimes(prime, primes);
-		if (p && p.primes.length > max.primes.length) {
-			max = p;
+		var sum = 0;
+		for (var j = i; j < l && sum < limit; ++j) {
+			sum += primes[j];
+			if (sum < limit) {
+				if (primesObj[sum]) {
+					var length = j - i + 1;
+					if (length > max.length) {
+						max = {
+							prime: sum,
+							i: i,
+							length: length,
+						}
+					}
+				}
+			}
 		}
 	}
-
-	if (max.primes.length) {
-		return max;
-	}
+	max.sum = primes.slice(max.i, max.i + max.length);
+	delete max.i;
+	return max;
 }
 
 console.log('getLongestPrimeSumTo(100)', getLongestPrimeSumTo(100));

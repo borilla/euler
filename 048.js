@@ -1,5 +1,5 @@
 
-// limit calculations to just final 10 digits
+// limit BigNum calculations to just final 10 digits
 BigNum.limit = 10;
 
 var sum = new BigNum(0);

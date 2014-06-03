@@ -45,22 +45,25 @@ var Utils = (function() {
 		return n & 1;
 	}
 
-	function getPermutation(n, digits) {
-		function getFactorials(n) {
-			var memo = getPermutation.memo;
-			var m = memo[n];
-			if (!m) {
-				var f = 1;
-				var fs = [];
-				for (var i = 1; i <= digits.length; ++i) {
-					fs.push(f *= i);
-				}
-				m = memo[n] = fs.reverse();
+	/**
+	 * helper for getPermutation()
+	 */
+	function getFactorials(n) {
+		var memo = getFactorials.memo;
+		var m = memo[n];
+		if (!m) {
+			var f = 1;
+			var fs = [];
+			for (var i = 1; i <= n; ++i) {
+				fs.push(f *= i);
 			}
-			return m;
+			m = memo[n] = fs.reverse();
 		}
-		getFactorials.memo = {};
+		return m;
+	}
+	getFactorials.memo = {};
 
+	function getPermutation(n, digits) {
 		digits = digits.split('');
 		var result = [];
 		var length = digits.length;
@@ -76,7 +79,20 @@ var Utils = (function() {
 		result.push(digits[0]);
 		return result.join('');
 	}
-	getPermutation.memo = {};
+
+	function isPermutationOf(str1, str2) {
+		var length = str1.length;
+		if (str2.length != length) {
+			return false;
+		}
+		for (var i = length - 1; i >= 0; --i) {
+			str2 = str2.replace(str1[i], '');
+			if (str2.length != i) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 	return {
 		arrayProduct: arrayProduct,
@@ -86,6 +102,7 @@ var Utils = (function() {
 		getFactorial: getFactorial,
 		getPermutation: getPermutation,
 		isEven: isEven,
-		isOdd: isOdd
+		isOdd: isOdd,
+		isPermutationOf: isPermutationOf
 	};
 }());

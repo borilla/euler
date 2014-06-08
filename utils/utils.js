@@ -94,6 +94,24 @@ var Utils = (function() {
 		return true;
 	}
 
+	function reverse(str) {
+		str = str.toString();
+		return str.split('').reverse().join('');
+	}
+
+	function isPalindrome(str) {
+		str = str.toString();
+		var length = str.length;
+		var half = length >> 1;
+		var m = length - 1;
+		for (var i = 0; i < half; ++i) {
+			if (str[i] != str[m - i]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	return {
 		arrayProduct: arrayProduct,
 		arraySum: arraySum,
@@ -103,6 +121,8 @@ var Utils = (function() {
 		getPermutation: getPermutation,
 		isEven: isEven,
 		isOdd: isOdd,
-		isPermutationOf: isPermutationOf
+		isPalindrome: isPalindrome,
+		isPermutationOf: isPermutationOf,
+		reverse: reverse
 	};
 }());

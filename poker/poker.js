@@ -55,7 +55,7 @@ Poker.Hand = (function() {
 		var rank = rankHand(groups, cards);
 
 		// fix card sort order for low-ace straight
-		if (rank == Hand.STRIGHT || rank == Hand.STRAIGHT_FLUSH) {
+		if (rank == Hand.STRAIGHT || rank == Hand.STRAIGHT_FLUSH) {
 			var card0 = cards[0];
 			var card4 = cards[4];
 			if (card0.value == 14 && card4.value == 2) {
@@ -78,7 +78,7 @@ Poker.Hand = (function() {
 	Hand.QUADS = 7;
 	Hand.FULL_HOUSE = 6;
 	Hand.FLUSH = 5;
-	Hand.STRIGHT = 4;
+	Hand.STRAIGHT = 4;
 	Hand.TRIPS = 3;
 	Hand.TWO_PAIRS = 2;
 	Hand.PAIR = 1;
@@ -162,7 +162,7 @@ Poker.Hand = (function() {
 		var v0 = sortedCards[0].value;
 		var v1 = sortedCards[1].value;
 		if (v0 == v1 + 1 || (v0 == 14 && v1 == 5)) {
-			return Hand.STRIGHT;
+			return Hand.STRAIGHT;
 		}
 	}
 

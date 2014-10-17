@@ -112,10 +112,26 @@ var Utils = (function() {
 		return true;
 	}
 
+	function getCommonItems(array1, array2) {
+		var length = array1.length;
+		if (array2.length < length) {
+			return getCommonItems(array2, array1);
+		}
+		var results = [];
+		for (var i = 0; i < length; ++i) {
+			var item = array1[i];
+			if (array2.indexOf(item) != -1) {
+				results.push(item);
+			}
+		}
+		return results;
+	}
+
 	return {
 		arrayProduct: arrayProduct,
 		arraySum: arraySum,
 		commonFactor: commonFactor,
+		getCommonItems: getCommonItems,
 		getDigits: getDigits,
 		getFactorial: getFactorial,
 		getPermutation: getPermutation,

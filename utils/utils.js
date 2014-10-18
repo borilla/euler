@@ -127,10 +127,20 @@ var Utils = (function() {
 		return results;
 	}
 
+	function getAsciiSum(str) {
+		var sum = 0;
+		for (var i = 0, l = str.length; i < l; ++i) {
+			var code = str.charCodeAt(i);
+			sum += code;
+		}
+		return sum;
+	}
+
 	return {
 		arrayProduct: arrayProduct,
 		arraySum: arraySum,
 		commonFactor: commonFactor,
+		getAsciiSum: getAsciiSum,
 		getCommonItems: getCommonItems,
 		getDigits: getDigits,
 		getFactorial: getFactorial,

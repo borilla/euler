@@ -136,6 +136,10 @@ var Utils = (function() {
 		return sum;
 	}
 
+	function polygonal(x, n) {
+		return n * ((x - 2) * n + 4 - x) / 2;
+	}
+
 	return {
 		arrayProduct: arrayProduct,
 		arraySum: arraySum,
@@ -149,6 +153,7 @@ var Utils = (function() {
 		isOdd: isOdd,
 		isPalindrome: isPalindrome,
 		isPermutationOf: isPermutationOf,
+		polygonal: polygonal,
 		reverse: reverse
 	};
 }());

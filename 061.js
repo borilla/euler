@@ -1,5 +1,5 @@
 
-for (var x = 3; x <= 8; ++x) {
+for (var x = 2; x <= 8; ++x) {
 	console.log(
 		Utils.polygonal(x, 1),
 		Utils.polygonal(x, 2),
@@ -18,13 +18,14 @@ function getFourDigitPolygonals(x) {
 		if (p >= 1000 && p < 10000) {
 			result.push({
 				p: p,
-				x: x
+				x: x // x is the "polygonal group"
 			});
 		}
 	}
 	return result;
 }
 
+// console.log(getFourDigitPolygonals(2));
 // console.log(getFourDigitPolygonals(3));
 // console.log(getFourDigitPolygonals(4));
 // console.log(getFourDigitPolygonals(5));
@@ -58,7 +59,7 @@ function findCyclicalSet(all, size, set) {
 		if (result) {
 			return result;
 		}
-		// else
+		// else, try the next candidate instead
 		set.pop();
 	}
 	return false;

@@ -116,18 +116,26 @@ var Utils = (function() {
 	}
 
 	function getCommonItems(array1, array2) {
-		var length = array1.length;
-		if (array2.length < length) {
-			return getCommonItems(array2, array1);
+		var args = argsToArray(arguments).sort(byLength);
+		return args.reduce(_getCommonItems);
+
+		function byLength(a, b) {
+			var al = a.length;
+			var bl = b.length;
+			return al < bl ? -1 : al == bl ? 0 : 1;
 		}
-		var results = [];
-		for (var i = 0; i < length; ++i) {
-			var item = array1[i];
-			if (array2.indexOf(item) != -1) {
-				results.push(item);
+
+		function _getCommonItems(array1, array2) {
+			var length = array1.length;
+			var results = [];
+			for (var i = 0; i < length; ++i) {
+				var item = array1[i];
+				if (array2.indexOf(item) != -1) {
+					results.push(item);
+				}
 			}
+			return results;
 		}
-		return results;
 	}
 
 	function getAsciiSum(str) {
@@ -145,6 +153,21 @@ var Utils = (function() {
 
 	function sumDigits(str) {
 		return arraySum(getDigits(str));
+	}
+
+	function argsToArray(args, start) {
+		start = start || 0;
+		var length = args.length;
+		var size = length - start;
+		if (size <= 0) {
+			return [];
+		}
+		// else
+		var array = Array(size);
+		for (var i = start, j = 0; i < length; ++i, ++j) {
+			array[j] = args[i];
+		}
+		return array;
 	}
 
 	return {

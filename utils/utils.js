@@ -26,6 +26,9 @@ var Utils = (function() {
 	}
 
 	function commonFactor(n1, n2) {
+		if (n1 == 1 || n2 == 1) {
+			return 1;
+		}
 		var f1 = Primes.getAllFactors(n1);
 		var f2 = Primes.getAllFactors(n2);
 		for (var i = f1.length - 1; i; --i) {
@@ -140,10 +143,15 @@ var Utils = (function() {
 		return n * ((x - 2) * n + 4 - x) / 2;
 	}
 
+	function sumDigits(str) {
+		return arraySum(getDigits(str));
+	}
+
 	return {
 		arrayProduct: arrayProduct,
 		arraySum: arraySum,
 		commonFactor: commonFactor,
+		sumDigits: sumDigits,
 		getAsciiSum: getAsciiSum,
 		getCommonItems: getCommonItems,
 		getDigits: getDigits,

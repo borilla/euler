@@ -1,49 +1,58 @@
 var Poker = Poker || {};
 
-Poker.Card = function(s) {
-	function cardValue(char) {
-		switch (char.toUpperCase()) {
-		case 'A':
-			return 14;
-		case 'K':
-			return 13;
-		case 'Q':
-			return 12;
-		case 'J':
-			return 11;
-		case 'T':
-			return 10;
+Poker.Card = (function() {
+	function Card(s) {
+		this.value = valueFromChar(s[0]);
+		this.suit = s[1];
+		this.toString = function() {
+			return s;
 		}
-		// else
+	}
+
+	function valueFromChar(char) {
+		switch (char.toUpperCase()) {
+			case 'T': return 10;
+			case 'J': return 11;
+			case 'Q': return 12;
+			case 'K': return 13;
+			case 'A': return 14;
+		}
 		return parseInt(char);
 	}
 
-	function cardLetter(value) {
+	Card.valueToString = function(value) {
 		switch (value) {
-		case 14:
-			return 'A';
-		case 13:
-			return 'K';
-		case 12:
-			return 'Q';
-		case 11:
-			return 'J';
-		case 10:
-			return 'T';
+			case 1: return 'one';
+			case 2: return 'two';
+			case 3: return 'three';
+			case 4: return 'four';
+			case 5: return 'five';
+			case 6: return 'six';
+			case 7: return 'seven';
+			case 8: return 'eight';
+			case 9: return 'nine';
+			case 10: return 'ten';
+			case 11: return 'jack';
+			case 12: return 'queen';
+			case 13: return 'king';
+			case 14: return 'ace';
 		}
-		// else
-		return '' + value;
 	}
 
-	this.value = cardValue(s[0]);
-	this.suit = s[1];
-	this.toString = function() {
-		return s;
+	Card.valueToPlural = function(value) {
+		return value == 6 ? 'sixes' : Card.valueToString(value) + 's';
 	}
-}
+
+	Card.compare = function(card1, card2) {
+		var value1 = card1.value;
+		var value2 = card2.value;
+		return value1 < value2 ? -1 : value1 > value2 ? 1 : 0;
+	}
+
+	return Card;
+}());
 
 Poker.Hand = (function() {
-
 	function Hand(cards) {
 		if (typeof cards == 'string') {
 			cards = stringToCards(cards);
@@ -74,17 +83,54 @@ Poker.Hand = (function() {
 		}).join(' ');
 	}
 
-	Hand.STRAIGHT_FLUSH = 8;
-	Hand.QUADS = 7;
-	Hand.FULL_HOUSE = 6;
-	Hand.FLUSH = 5;
-	Hand.STRAIGHT = 4;
-	Hand.TRIPS = 3;
-	Hand.TWO_PAIRS = 2;
-	Hand.PAIR = 1;
+	Hand.prototype.reportRank = function() {
+		var PokerCard = Poker.Card;
+		var cards = this.cards;
+		switch (this.rank) {
+		case Hand.HIGH_CARD:
+			return 'high card, ' + value(0) + ' high';
+		case Hand.PAIR:
+			return 'pair of ' + plural(0);
+		case Hand.TWO_PAIRS:
+			return 'two pairs, ' + plural(0) + ' and ' + plural(2);
+		case Hand.TRIPS:
+			return 'three ' + plural(0);
+		case Hand.STRAIGHT:
+			return 'straight, ' + value(0) + ' high';
+		case Hand.FLUSH:
+			return 'flush, ' + value(0) + ' high';
+		case Hand.FULL_HOUSE:
+			return 'full house, ' + plural(0) + ' full of ' + plural(3);
+		case Hand.QUADS:
+			return 'four ' + plural(0);
+		case Hand.STRAIGHT_FLUSH:
+			return 'straight flush, ' + value(0) + ' high';
+		case Hand.ROYAL_FLUSH:
+			return 'royal flush';
+		}
+
+		function value(n) {
+			return PokerCard.valueToString(cards[n].value);
+		}
+
+		function plural(n) {
+			return PokerCard.valueToPlural(cards[n].value);
+		}
+	}
+
 	Hand.HIGH_CARD = 0;
+	Hand.PAIR = 1;
+	Hand.TWO_PAIRS = 2;
+	Hand.TRIPS = 3;
+	Hand.STRAIGHT = 4;
+	Hand.FLUSH = 5;
+	Hand.FULL_HOUSE = 6;
+	Hand.QUADS = 7;
+	Hand.STRAIGHT_FLUSH = 8;
+	Hand.ROYAL_FLUSH = 9;
 
 	Hand.compare = function(hand1, hand2) {
+		var compareCards = Poker.Card.compare;
 		if (hand1.rank < hand2.rank) {
 			return -1;
 		}
@@ -93,14 +139,10 @@ Poker.Hand = (function() {
 		}
 		var cards1 = hand1.cards;
 		var cards2 = hand2.cards;
+		var cmp;
 		for (var i = 0, l = cards1.length; i < l; ++i) {
-			var value1 = cards1[i].value;
-			var value2 = cards2[i].value;
-			if (value1 < value2) {
-				return -1;
-			}
-			if (value1 > value2) {
-				return 1;
+			if (cmp = compareCards(cards1[i], cards2[i])) {
+				return cmp;
 			}
 		}
 		return 0;
@@ -127,7 +169,8 @@ Poker.Hand = (function() {
 
 	function isStraightFlush(sortedCards) {
 		if (isFlush(sortedCards) && isStraight(sortedCards)) {
-			return Hand.STRAIGHT_FLUSH;
+			var high = sortedCards[0].value;
+			return high == 14 ? Hand.ROYAL_FLUSH : Hand.STRAIGHT_FLUSH;
 		}
 	}
 

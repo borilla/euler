@@ -1002,11 +1002,15 @@ var hands = [
 ];
 
 function compareHands(hand1, hand2) {
-	var h1 = new Poker.Hand(hand1);
-	var h2 = new Poker.Hand(hand2);
+	var PokerHand = Poker.Hand;
+	var h1 = new PokerHand(hand1);
+	var h2 = new PokerHand(hand2);
 	console.log(h1.toString(), ',', h2.toString());
-	var c = Poker.Hand.compare(h1, h2);
-	return c > 0 ? 'hand 1 wins' : c < 0 ? 'hand 2 wins' : 'draw';
+	var c = PokerHand.compare(h1, h2);
+	var winnerStr = c > 0 ? 'hand 1 wins' : c < 0 ? 'hand 2 wins' : 'draw';
+	var winnerRankStr = (c < 0 ? h2 : h1).reportRank();
+	var loserRankStr = (c < 0 ? h1 : h2).reportRank();
+	return winnerStr + ' with ' + winnerRankStr + ' over ' + loserRankStr;
 }
 
 console.log(compareHands('3H 7H 6S KC JS', 'QH TD JC 2D 8S'));

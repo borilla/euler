@@ -18,12 +18,20 @@ var Utils = (function() {
 	}
 
 	function getFactorial(n) {
-		var f = 1;
-		for (i = 2; i <= n; ++i) {
-			f *= i;
+		var memo = getFactorial.memo;
+		var value = memo[n];
+		if (!value) {
+			var length = memo.length;
+			value = memo[length - 1];
+			while (length <= n) {
+				value *= length;
+				memo[length] = value;
+				length++;
+			}
 		}
-		return f;
+		return value;
 	}
+	getFactorial.memo = [1];
 
 	function commonFactor(n1, n2) {
 		if (n1 == 1 || n2 == 1) {
@@ -48,39 +56,46 @@ var Utils = (function() {
 		return n & 1;
 	}
 
-	/**
-	 * helper for getPermutation()
-	 */
-	function getFactorials(n) {
-		var memo = getFactorials.memo;
-		var m = memo[n];
-		if (!m) {
-			var f = 1;
-			var fs = [];
-			for (var i = 1; i <= n; ++i) {
-				fs.push(f *= i);
-			}
-			m = memo[n] = fs.reverse();
-		}
-		return m;
+	function getPermutation(n, obj) {
+		var fn = (typeof obj == 'string') ? getPermutationString : getPermutationArray;
+		return fn(n, obj);
 	}
-	getFactorials.memo = {};
 
-	function getPermutation(n, digits) {
-		digits = digits.split('');
+	function getPermutationString(n, str) {
+		var array = str.split('');
+		var result = _getPermutation(n, array);
+		return result.join('');
+	}
+
+	function getPermutationArray(n, arr) {
+		var clone = arr.slice();
+		return _getPermutation(n, clone);
+	}
+
+	function getFactorials(n) {
+		var f = [];
+		for (var i = n; i; --i) {
+			f.push(getFactorial(i));
+		}
+		return f;
+	}
+
+	/**
+	 * Helper for getPermutation..() functions. Modifies supplied array!
+	 */
+	function _getPermutation(n, arr) {
 		var result = [];
-		var length = digits.length;
-		var factorials = getFactorials(length);
-		n %= factorials[0];
-		for (var i = 0; i < length - 1; ++i) {
-			var f = factorials[i + 1];
+		var length = arr.length;
+		n %= getFactorial(length);
+		for (var i = length - 1; i; --i) {
+			var f = getFactorial.memo[i];
 			var j = Math.floor(n / f);
 			n %= f;
-			result.push(digits[j]);
-			digits.splice(j, 1);
+			result.push(arr[j]);
+			arr.splice(j, 1);
 		}
-		result.push(digits[0]);
-		return result.join('');
+		result.push(arr[0]);
+		return result;
 	}
 
 	function isPermutationOf(str1, str2) {
@@ -116,10 +131,10 @@ var Utils = (function() {
 	}
 
 	function getCommonItems(array1, array2) {
-		var args = argsToArray(arguments).sort(byLength);
+		var args = argsToArray(arguments).sort(_sortByLength);
 		return args.reduce(_getCommonItems);
 
-		function byLength(a, b) {
+		function _sortByLength(a, b) {
 			var al = a.length;
 			var bl = b.length;
 			return al < bl ? -1 : al == bl ? 0 : 1;

@@ -72,14 +72,6 @@ var Utils = (function() {
 		return _getPermutation(n, clone);
 	}
 
-	function getFactorials(n) {
-		var f = [];
-		for (var i = n; i; --i) {
-			f.push(getFactorial(i));
-		}
-		return f;
-	}
-
 	/**
 	 * Helper for getPermutation..() functions. Modifies supplied array!
 	 */
@@ -96,6 +88,18 @@ var Utils = (function() {
 		}
 		result.push(arr[0]);
 		return result;
+	}
+
+	function getCombinations(arr) {
+		var item = arr[0];
+		var remainder = arr.slice(1);
+		var combinations = remainder.length ? getCombinations(remainder) : [];
+		for (var i = 0, l = combinations.length; i < l; ++i) {
+			var clone = combinations[i].concat(item);
+			combinations.push(clone);
+		}
+		combinations.push([item]);
+		return combinations;
 	}
 
 	function isPermutationOf(str1, str2) {
@@ -162,7 +166,7 @@ var Utils = (function() {
 		return sum;
 	}
 
-	function polygonal(x, n) {
+	function getPolygonal(x, n) {
 		return n * ((x - 2) * n + 4 - x) / 2;
 	}
 
@@ -185,13 +189,30 @@ var Utils = (function() {
 		return array;
 	}
 
+	function concatArrays(array1, array2) {
+		var l1 = array1.length;
+		var l2 = array2.length;
+		var result = Array(l1 + l2);
+		for (var i = 0; i < l1; ++i) {
+			result[i] = array1[i];
+		}
+		for (var j = 0; j < l2; ++j, ++i) {
+			result[i] = array2[j];
+		}
+		return result;
+	}
+
+	var isArray = Array.isArray;
+
 	return {
 		arrayProduct: arrayProduct,
 		arraySum: arraySum,
 		commonFactor: commonFactor,
+		concatArrays: concatArrays,
 		sumDigits: sumDigits,
 		getAsciiSum: getAsciiSum,
 		getCommonItems: getCommonItems,
+		getCombinations: getCombinations,
 		getDigits: getDigits,
 		getFactorial: getFactorial,
 		getPermutation: getPermutation,
@@ -199,7 +220,7 @@ var Utils = (function() {
 		isOdd: isOdd,
 		isPalindrome: isPalindrome,
 		isPermutationOf: isPermutationOf,
-		polygonal: polygonal,
+		getPolygonal: getPolygonal,
 		reverse: reverse
 	};
 }());

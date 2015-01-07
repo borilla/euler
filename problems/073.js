@@ -10,7 +10,7 @@ function countAllFractions(min, max, maxDenom) {
 		counts[denom] = countFractions(min, max, denom);
 	}
 
-	for (var i = 1; i < maxDenom; ++i) {
+	for (var i = 2; i < maxDenom; ++i) {
 		var count = counts[i];
 		for (var j = i + i; j <= maxDenom; j += i) {
 			counts[j] -= count;
@@ -25,3 +25,4 @@ var max = { n: 1, d: 2 };
 
 console.log('countAllFractions(min, max, 8)', countAllFractions(min, max, 8));
 console.log('countAllFractions(min, max, 12000)', countAllFractions(min, max, 12000));
+console.log('countAllFractions(min, max, 1e6)', countAllFractions(min, max, 1e6));

@@ -1,12 +1,16 @@
 function digitFactorialSum(n) {
-	var digits = ('' + n).split('');
-	var factorials = digits.map(function(digit) {
-		return Utils.getFactorial(digit);
-	});
-	var sum = Utils.arraySum(factorials);
-//	console.log(n, digits, factorials, sum);
+	var memo = digitFactorialSum.memo;
+	var sum = memo[n];
+	if (!sum) {
+		var digits = ('' + n).split('');
+		var factorials = digits.map(function(digit) {
+			return Utils.getFactorial(digit);
+		});
+		sum = memo[n] = Utils.arraySum(factorials);
+	}
 	return sum;
 }
+digitFactorialSum.memo = {};
 
 console.log('digitFactorialSum(145)', digitFactorialSum(145));
 console.log('digitFactorialSum(69)', digitFactorialSum(69));
@@ -40,8 +44,7 @@ function factorialChainsOfLength(l) {
 			chains.push(chain);
 		}
 	}
-	return chains;
-} 
+	return chains.length;
+}
 
-var factorialChainsOfLength60 = factorialChainsOfLength(60)
-console.log('factorialChainsOfLength(60)', factorialChainsOfLength60.length, factorialChainsOfLength60);
+console.log('factorialChainsOfLength(60)', factorialChainsOfLength(60)); // 402
